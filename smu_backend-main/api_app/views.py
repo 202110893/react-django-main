@@ -12,10 +12,12 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from api_app.models import Address
 from django.conf import settings
-from .models import JsonDb
-from .models import PDFFile
+#from .models import PDFFile
 from PyPDF2 import PdfReader
 from django.shortcuts import get_object_or_404
+from board.models import Post, PostImage
+
+
 def success(request):
     full_address = request.GET.get('fullAddress')  # GET 매개변수에서 fullAddress 값을 가져옴
     if full_address:
@@ -158,15 +160,15 @@ def success(request):
     pdf_file_url = None
       
 
-    if PDFFile.objects.exists():
+    if Post.objects.exists():
         # 가장 최근에 업로드된 PDF 파일 가져오기
-        pdf_file = PDFFile.objects.latest('uploaded_at')
+        pdf_file = Post.objects.latest('uploaded_at')
         # MEDIA_URL과 파일 이름을 결합하여 URL 생성
         pdf_file_url = pdf_file.file_name
         
         # file_name을 기준으로 PDF 파일을 가져옴
         file_name = pdf_file.file_name
-        pdf_file = get_object_or_404(PDFFile, file_name=file_name)
+        pdf_file = get_object_or_404(Post, file_name=file_name)
 
         # 바이너리 데이터를 BytesIO 객체로 변환
         pdf_binary_data = pdf_file.file_data
@@ -213,13 +215,14 @@ def success(request):
 
         if results:
             summary = "\n".join(results)  # 리스트를 문자열로 변환
+            pdf_file.safety = False 
         else:
             summary = "키워드 없음"
+            pdf_file.safety = True  #키워드가 없을 시에 안전함으로 바꿈
 
         pdf_file.summary = summary
         pdf_file.save() 
-        print("요약 저장 완료:", summary)
-  
+        
     # 예시: 파일 업로드 뷰
     
     context = {
@@ -238,7 +241,7 @@ def success(request):
     
 def get_next_pdf_filename():
     """가장 최근의 PDF 파일 번호를 기반으로 다음 파일 이름 생성"""
-    last_pdf_file = PDFFile.objects.order_by('-uploaded_at').first()
+    last_pdf_file = Post.objects.order_by('-uploaded_at').first()
     if last_pdf_file:
         # 파일 이름에서 숫자를 추출하여 다음 숫자를 계산
         last_number = int(last_pdf_file.file_name.split('_')[-1].replace('.pdf', ''))
@@ -252,7 +255,7 @@ def save_pdf_to_db(pdf_binary_data):
     # 다음 파일 이름을 생성
     file_name = get_next_pdf_filename()
     # PDF 파일을 데이터베이스에 저장
-    pdf_file = PDFFile(
+    pdf_file = Post(
         file_name=file_name,
         file_data=pdf_binary_data
     )
@@ -261,7 +264,7 @@ def save_pdf_to_db(pdf_binary_data):
 
 def get_pdf_file(request, pdf_file_name):
     # 파일 이름으로 PDF 파일을 가져옴
-    pdf_file = get_object_or_404(PDFFile, file_name=pdf_file_name)
+    pdf_file = get_object_or_404(Post, file_name=pdf_file_name)
     
     # PDF 파일 데이터를 HTTP 응답으로 반환
     response = HttpResponse(pdf_file.file_data, content_type='application/pdf')

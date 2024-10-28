@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import KakaoMap from '../map/kakaomap'
 import styled from 'styled-components';
 import apart2 from '../../images/apart_2.png';
-import summary from '../../images/summary.png';
+import reading_glasses from '../../images/reading_glasses.png';
 
 /* 부동산게시글 */
 const Text1 = styled.div`
@@ -259,6 +259,24 @@ const Strokeb = styled.div`
     margin: 0 auto;
     background-color: #000;
 `
+// 모달 추가
+const Modal = styled.div`
+    display: ${props => (props.isOpen ? 'flex' : 'none')};
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+`;
+
+const ModalContent = styled.div`
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+`;
 
 /* ------footer부분이 내용을 가려서 공백으로 추가했습니다.------ */
 const Blank = styled.div` 
@@ -268,8 +286,23 @@ const Blank = styled.div`
     background-color: #FFFFFF;
 `
 
-const SafePage = ({ title, content, price, region, address, size, direction, availability, floor, apart, images }) => {
-    return (
+const SafePage = ({ title, content, price, region, address, size, direction, availability, floor, apart, images,summary,safety }) => {
+    const [modalContent, setModalContent] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenModal = () => {
+        console.log('Modal opening');
+        if (!summary || summary.trim() === '') {
+            setModalContent("요약이 존재하지 않습니다"); 
+        } else {
+            setModalContent(summary);
+        }
+        setIsModalOpen(true);
+
+        
+        };
+        const handleCloseModal = () => {
+            setIsModalOpen(false);
+    };return (
         <>
             <Text1>부동산 게시글
                 <Rectangle4>
@@ -283,11 +316,13 @@ const SafePage = ({ title, content, price, region, address, size, direction, ava
             <Text2>{title}</Text2>
             <Summary>
                 <Text3>0inbye에서 이 집에 등기부등본을 요약해본 결과</Text3>
-                <Text3>'안전합니다'</Text3>
-                <Summaryrectangle>
-                    <Img src={summary} alt="summary"></Img>
+                <Text3>{safety ? '안전합니다' : '주의하세요'}</Text3>         
+                <Summaryrectangle onClick={handleOpenModal}>
+                    <Img src={reading_glasses} alt="reading_glasses"></Img>
                     <Textsummary className="Textsummary">자세한 요약 확인하기</Textsummary>
                 </Summaryrectangle>
+
+
             </Summary>
             {/* 채팅하기 */}
             <Section2>
@@ -383,7 +418,13 @@ const SafePage = ({ title, content, price, region, address, size, direction, ava
             
 
             <Blank></Blank>
-       
+            <Modal isOpen={isModalOpen}>
+                <ModalContent>
+                    <h2>모달 내용</h2>
+                    <p>{modalContent}</p>
+                    <button onClick={handleCloseModal}>닫기</button>
+                </ModalContent>
+            </Modal>
         </>
     );
 }

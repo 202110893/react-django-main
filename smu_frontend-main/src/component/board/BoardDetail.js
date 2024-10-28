@@ -36,6 +36,8 @@ const BoardDetail = () => {
               floor = {board.floor}
               apart = {board.apart}
               images={board.images}
+              summary={board.summary}
+              safety={board.safety}
             />
           )}
         </>

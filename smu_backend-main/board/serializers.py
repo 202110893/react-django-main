@@ -23,7 +23,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'email', 'title', 'content', 'price', 'region', 'address', 'size', 'direction', 'availability', 'floor', 'apart', 'images']
+        fields = ['id', 'email', 'title', 'content', 'price', 'region', 'address', 'size', 'direction', 'availability', 'floor', 'apart', 'images','file_name','file_data','summary', 'safety']
         
     # create 메서드는 새로운 Post 객체와 관련된 PostImage 객체들을 생성하여 저장
     def create(self, validated_data):

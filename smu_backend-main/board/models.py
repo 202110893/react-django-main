@@ -18,6 +18,13 @@ class Post(models.Model):
    floor = models.CharField("몇층",max_length=100, null=False)
    apart = models.CharField("아파트", max_length=255, null=False)
    
+   file_name = models.CharField(max_length=255, default="noname.pdf")
+   file_data = models.BinaryField(null=True)
+   uploaded_at = models.DateTimeField(auto_now_add=True,null=True)
+   summary = models.TextField(blank=True, null=True,default='')
+   safety=models.BooleanField(default=False,db_default=False)
+
+
    class Meta:
         ordering = ['created']
 

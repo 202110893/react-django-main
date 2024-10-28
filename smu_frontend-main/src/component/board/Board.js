@@ -217,7 +217,8 @@ const Textc = styled.div`
 `
 
 const Board = ({ title, content, price, region, address, size, direction, availability, floor, apart, images }) => {
-  return (
+    const safety_status = pdf_file.safety ? '안전합니다' : '해당 키워드 부분을 주의하세요';
+    return (
     <>
             <Text1>부동산 게시글
                 <Rectangle4>
@@ -231,7 +232,7 @@ const Board = ({ title, content, price, region, address, size, direction, availa
             <Text2>신축 화이트톤 깔끔한 투룸, 시청역 5분 거리</Text2>
             <Summary>
                 <Text3>0inbye에서 이 집에 등기부등본을 요약해본 결과</Text3>
-                <Text3>'안전합니다'</Text3>
+                <Text3>{safety_status}</Text3>
                 <Summaryrectangle>
                     <Img src={summary} alt="summary"></Img>
                     <Textsummary className="Textsummary">자세한 요약 확인하기</Textsummary>

@@ -122,7 +122,7 @@ const Input = () => {
 
     const [formData, setFormData] = useState({
         title: '',
-        content: '',
+        content: '',  
         region: '',
         apart: '',
         address: '',
