@@ -22,7 +22,7 @@ class Post(models.Model):
    file_data = models.BinaryField(null=True)
    uploaded_at = models.DateTimeField(auto_now_add=True,null=True)
    summary = models.TextField(blank=True, null=True,default='')
-   safety=models.BooleanField(default=False,db_default=False)
+   safety=models.BooleanField(default=False)
 
 
    class Meta:
