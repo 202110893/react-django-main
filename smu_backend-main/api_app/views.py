@@ -233,7 +233,7 @@ def success(request):
         'summary': summary,
     }
 
-    #예전코드
+   
     #return render(request, 'api_app/success.html', context)
     return HttpResponseRedirect('localhost:3000/Input')
 

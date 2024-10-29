@@ -7,6 +7,7 @@ urlpatterns = [
     path('', include('login_module.urls')),
     path('', include('board.urls')),
     path('', include('kakaopay.urls')),
+    path('', include('api_app.urls')),
     
 
 ]

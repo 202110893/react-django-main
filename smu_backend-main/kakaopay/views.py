@@ -26,7 +26,7 @@ def kakaopay(request):
             'total_amount':'820',
             'vat_amount':'0',
             'tax_free_amount':'0',  
-            'approval_url':'http://127.0.0.1:8000/kakaopay/paySuccess', 
+            'approval_url':'http://127.0.0.1:8000/paySuccess', 
             'fail_url':'http://127.0.0.1:8000/payFail',
             'cancel_url':'http://127.0.0.1:8000/payCancel'
             }
