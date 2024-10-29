@@ -97,24 +97,23 @@ const Text2 = styled.div`
 
 /* 등기부등본을 요약해본 결과~ 박스 */
 const Summary = styled.div`
-    background-color: #EBFBEE;
+    background-color: ${props => (props.isSafe ? '#EBFBEE' : '#FFF5F5')};
     width: 60%;
     height: 20%;
     border-radius: 24px;
     margin: 2% auto;
 `
-
 const Text3 = styled.div`
-    color: #2B8A3E;
+    color: ${props => (props.isSafe ? '#2B8A3E' : '#CE3C3C')}; // 안전한 경우와 주의할 경우 색상 변경
     font-family: "Spoqa Han Sans Neo";
     font-size: 1.2vw;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-
     text-align: center;
     padding-top: 3%; 
-`
+`;
+
 
 const Summaryrectangle = styled.div`
     background-color: #D0EBFF;
@@ -274,9 +273,52 @@ const Modal = styled.div`
 
 const ModalContent = styled.div`
     background: white;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* 모달의 최대 너비 */
+    margin: 0 auto; /* 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-family: 'Spoqa Han Sans Neo', sans-serif; /* 폰트 적용 */
+    position: relative; /* 내부 요소를 절대 위치로 배치할 수 있도록 */
+    animation: fadeIn 0.3s; /* 부드러운 페이드 인 효과 */
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    h2 {
+        font-size:18px;
+        color: #1864AB; /* 제목 색상 */
+        margin-bottom: 15px; /* 제목 아래 여백 */
+    }
+
+    p {
+        color: #333; /* 본문 텍스트 색상 */
+        margin-bottom: 20px; /* 본문 아래 여백 */
+    }
+
+    button {
+        background-color: #D0EBFF; /* 버튼 배경색 */
+        color: #1864AB; /* 버튼 텍스트 색상 */
+        border: none; /* 테두리 제거 */
+        padding: 10px 20px; /* 버튼 패딩 */
+        border-radius: 8px; /* 버튼 모서리 둥글게 */
+        cursor: pointer; /* 커서 변경 */
+        transition: background-color 0.3s; /* 배경색 전환 효과 */
+
+        &:hover {
+            background-color: #007bff; /* 호버 시 배경색 변경 */
+            color: white; /* 호버 시 텍스트 색상 변경 */
+        }
+    }
 `;
+
 
 /* ------footer부분이 내용을 가려서 공백으로 추가했습니다.------ */
 const Blank = styled.div` 
@@ -314,9 +356,9 @@ const SafePage = ({ title, content, price, region, address, size, direction, ava
             <Stroke1></Stroke1>
             <Roomimage src = {images[0].image}></Roomimage>
             <Text2>{title}</Text2>
-            <Summary>
-                <Text3>0inbye에서 이 집에 등기부등본을 요약해본 결과</Text3>
-                <Text3>{safety ? '안전합니다' : '주의하세요'}</Text3>         
+            <Summary isSafe={safety}>
+                <Text3 isSafe={safety}>0inbye에서 이 집에 등기부등본을 요약해본 결과</Text3>
+                <Text3 isSafe={safety}>{safety ? '안전합니다' : '주의하세요'}</Text3>         
                 <Summaryrectangle onClick={handleOpenModal}>
                     <Img src={reading_glasses} alt="reading_glasses"></Img>
                     <Textsummary className="Textsummary">자세한 요약 확인하기</Textsummary>
@@ -420,7 +462,7 @@ const SafePage = ({ title, content, price, region, address, size, direction, ava
             <Blank></Blank>
             <Modal isOpen={isModalOpen}>
                 <ModalContent>
-                    <h2>모달 내용</h2>
+                    <h2>요약 내용</h2>
                     <p>{modalContent}</p>
                     <button onClick={handleCloseModal}>닫기</button>
                 </ModalContent>

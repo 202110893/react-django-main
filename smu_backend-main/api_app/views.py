@@ -16,6 +16,7 @@ from django.conf import settings
 from PyPDF2 import PdfReader
 from django.shortcuts import get_object_or_404
 from board.models import Post, PostImage
+from django.http import HttpResponseRedirect  #리턴값에필요
 
 
 def success(request):
@@ -232,7 +233,9 @@ def success(request):
         'summary': summary,
     }
 
-    return render(request, 'api_app/success.html', context)
+    #예전코드
+    #return render(request, 'api_app/success.html', context)
+    return HttpResponseRedirect('localhost:3000/Input')
 
     ###########################################################################
 
