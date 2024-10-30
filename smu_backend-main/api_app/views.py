@@ -224,14 +224,14 @@ def success(request):
         pdf_file.summary = summary
         pdf_file.save() 
         
-    # 예시: 파일 업로드 뷰
+    # 테스트 : 파일 업로드 뷰
     
-    context = {
-        'full_address': full_address,
-        'latest_address': latest_address,
-        'pdf_file_url': pdf_file_url,
-        'summary': summary,
-    }
+    # context = {
+    #     'full_address': full_address,
+    #     'latest_address': latest_address,
+    #     'pdf_file_url': pdf_file_url,
+    #     'summary': summary,
+    # }
 
    
     #return render(request, 'api_app/success.html', context)
@@ -255,6 +255,7 @@ def get_next_pdf_filename():
 
 
 def save_pdf_to_db(pdf_binary_data):
+    print('save_pdf_to_db호출')
     # 다음 파일 이름을 생성
     file_name = get_next_pdf_filename()
     # PDF 파일을 데이터베이스에 저장
